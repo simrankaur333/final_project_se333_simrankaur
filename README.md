@@ -1,11 +1,13 @@
-# SE333 Final Project – Phase 1–3
+# SE333 Final Project – Phase 1–5
 
 ## Project Overview
 This project implements an AI-assisted software testing agent using the Model Context Protocol (MCP).
 
 - **Phase 1**: Environment setup, Python virtual environment configuration, MCP server setup, and connecting MCP server to VS Code.  
 - **Phase 2**: Agent definition, tool configuration, and test generation capabilities.  
-- **Phase 3**: Git automation MCP tools integrated into the workflow for streamlined version control.
+- **Phase 3**: Git automation MCP tools integrated into the workflow for streamlined version control.  
+- **Phase 4**: Intelligent test iteration (planned), including coverage-based feedback loops and automated test improvements.  
+- **Phase 5**: Creative extensions (planned), designing innovative MCP tools for additional test generation and code review.
 
 ## Phase 1 Deliverables Completed
 - VS Code configured with MCP integration  
@@ -37,29 +39,59 @@ This project implements an AI-assisted software testing agent using the Model Co
   4. `git_push(remote="origin")` – Pushes changes to the remote repository with upstream configuration  
   5. `git_pull_request(base="main", title, body)` – Creates a pull request with standard templates and metadata  
 - Integration verified:  
-  - Git tools are callable from the MCP server  
+  - Git tools callable from the MCP server  
   - Workflow supports automatic commits when coverage thresholds are met  
   - Branch protection guidelines observed for main/master branches  
 - Documentation added for each tool: usage, inputs, outputs, and example commands  
 
-## Usage Instructions
-1. Activate the Python virtual environment:  
-    ```bash
-    source .venv/bin/activate
-    ```
-2. Start the MCP server:  
-    ```bash
-    python server.py
-    ```
-3. Open VS Code Chat and connect to the MCP server (via MCP: Add Server)  
-4. To use Git MCP tools:  
-    - Run commands from the Chat interface or Python scripts  
-    - Examples:  
-      ```python
-      git_status()
-      git_add_all()
-      git_commit("Add Phase 3 MCP tools")
-      git_push()
-      git_pull_request(base="main", title="Phase 3 submission", body="Add Git MCP tools")
-      ```
-5. For the agent, follow `.github/prompts/tester.prompt.md` guidelines when sending prompts in Chat.
+## Phase 4 & 5 – Planned/Conceptual
+- **Agent Prompt Engineering**: Iterative test generation with feedback loop based on coverage results (planned).  
+- **Automated Test Improvement**: Automatic enhancements based on coverage gaps; debugging failed tests (planned).  
+- **Bug Fixing**: Identify and fix bugs using the agent (planned).  
+- **Quality Metrics Dashboard**: Track assertions per test, edge case coverage, bug fixes (planned).  
+- **Creative MCP Extensions**: Two innovative MCP tools to enhance testing agent:
+  1. Specification-based testing generator (boundary value and equivalence class analysis)  
+  2. AI code review agent (static analysis, code smells, refactoring suggestions)  
+
+> **Note:** Phase 4/5 was conceptual due to resource limits (token constraints, generated test errors). All plans and designs are documented in `.github/prompts/tester.prompt.md` and README for future implementation.
+
+## MCP Tool / API Documentation
+### Tools Implemented:
+1. **generate_junit_tests**
+   - **Input:** Path to Java source files  
+   - **Output:** JUnit test files in `codebase/src/test/java/generated_tests`  
+   - **Command:** Via MCP Chat or Python call: `agent.generate_tests(path="codebase/src/main/java")`  
+   - **Description:** Generates basic JUnit tests for public methods; reports unreadable files.  
+
+2. **Git MCP Tools** (`git_status()`, `git_add_all()`, `git_commit(message)`, `git_push()`, `git_pull_request(...)`)
+   - **Input/Output:** See Phase 3 documentation  
+   - **Commands:** Callable via MCP Chat or Python scripts  
+   - **Example:**  
+     ```python
+     git_status()
+     git_add_all()
+     git_commit("Add Phase 3 MCP tools")
+     git_push()
+     git_pull_request(base="main", title="Phase 3 submission", body="Add Git MCP tools")
+     ```
+
+## Installation & Configuration
+1. Clone repository  
+2. Install `uv` and MCP dependencies:
+   ```bash
+   uv init
+   uv venv
+   source .venv/bin/activate
+   uv add mcp[cli] httpx fastmcp
+3. Start MCP server:
+    python3 mcp_server/server.py
+4. Cnonect to VSCode Chat: 
+    - Press CTRL+SHIFT+P → MCP: Add Server
+    - Paste MCP server URL
+    - Confirm server connection
+
+## Troubleshooting & FAQ
+- MCP server not responding: Ensure virtual environment activated; check server is running on correct port.
+- Git tools fail: Confirm repository is initialized and on a valid branch; exclude build artifacts.
+- Agent fails to generate tests: Ensure Java files are UTF-8 encoded; generated tests may require manual fixes.
+- Maven build errors on generated tests: These are expected due to incomplete test generation; phase 4 planned to resolve.
